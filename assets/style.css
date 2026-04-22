@@ -526,3 +526,292 @@ footer img.footer-logo {
     font-size: 1.15rem;
   }
 }
+
+/* ============================================
+   FORM ENHANCEMENTS (visible labels for a11y)
+   ============================================ */
+.form-group input[type="tel"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: var(--font2);
+  font-size: 0.95rem;
+  color: #333;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-group input[type="tel"]:focus,
+.form-group input[type="password"]:focus {
+  border-color: var(--color1);
+}
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background: #f5f5f5;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.form-alert {
+  display: none;
+  background: #fdecea;
+  border: 1px solid #f5c2c0;
+  color: #8c1d1d;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+}
+.form-alert.alert-success {
+  background: #e8f7ef;
+  border-color: #b8e2c8;
+  color: #1f6b3a;
+}
+
+/* ============================================
+   CONFIRMATION CARD
+   ============================================ */
+.confirmation-card {
+  text-align: center;
+  padding: 24px 8px;
+}
+.confirmation-check {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color1);
+  color: #fff;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 64px;
+  margin: 0 auto 16px;
+}
+.confirmation-check-neutral {
+  background: #9aa4ae;
+}
+.confirmation-card h3 {
+  font-family: var(--font1);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 10px;
+}
+.confirmation-lead {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+.confirmation-note {
+  color: #666;
+  font-size: 0.88rem;
+  margin-top: 14px;
+  text-align: left;
+  background: #f8fbfd;
+  border-left: 3px solid var(--color1);
+  padding: 10px 12px;
+  border-radius: 2px;
+}
+.confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* ============================================
+   CODE DISPLAY
+   ============================================ */
+.code-display {
+  background: #f5fbfe;
+  border: 1px dashed var(--color1);
+  border-radius: 6px;
+  padding: 18px 16px;
+  margin: 18px 0;
+  text-align: center;
+}
+.code-display-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  padding: 12px 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.code-display-label {
+  font-size: 0.75rem;
+  color: #777;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.code-display-value {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a6fa3;
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}
+.code-display-status {
+  color: #b43a3a;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-left: auto;
+}
+.code-copy-btn {
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid var(--color1);
+  color: var(--color1);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-family: var(--font1);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.code-copy-btn:hover {
+  background: var(--color1);
+  color: #fff;
+}
+
+/* ============================================
+   DANGER ZONE (cancel registration)
+   ============================================ */
+.danger-zone {
+  margin-top: 32px;
+  padding: 18px;
+  border: 1px solid #f0c7c7;
+  border-radius: 6px;
+  background: #fef7f7;
+}
+.danger-zone h4 {
+  font-family: var(--font1);
+  font-size: 1rem;
+  font-weight: 800;
+  color: #8c1d1d;
+  margin-bottom: 8px;
+}
+.danger-zone p {
+  color: #6b3c3c;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+.btn-danger {
+  background: #c93838;
+  color: #fff;
+  border: 2px solid #c93838;
+}
+.btn-danger:hover {
+  background: #a62c2c;
+  border-color: #a62c2c;
+  color: #fff;
+  text-decoration: none;
+}
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   ADMIN
+   ============================================ */
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+.admin-totals {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.admin-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.admin-pill {
+  background: #f2f5f7;
+  color: #444;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+.admin-pill-primary {
+  background: var(--color1);
+  color: #fff;
+}
+.admin-pill-muted {
+  background: #eee;
+  color: #666;
+}
+.admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+.admin-table th {
+  background: #f8fbfd;
+  font-family: var(--font1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #555;
+  position: sticky;
+  top: 0;
+}
+.admin-table tbody tr:hover {
+  background: #fafcfd;
+}
+.admin-table .row-cancelled {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+.admin-table .mono {
+  font-family: Consolas, monospace;
+  font-size: 0.85rem;
+  color: #1a6fa3;
+}
+.admin-table .col-note {
+  max-width: 240px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.tag-ok { background: #e8f7ef; color: #1f6b3a; }
+.tag-muted { background: #ececec; color: #777; }

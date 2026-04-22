@@ -19,6 +19,7 @@
         <li><a href="index.html">START</a></li>
         <li><a href="details.html">DETAILS</a></li>
         <li class="active"><a href="anmeldung.html">ANMELDUNG</a></li>
+        <li><a href="verwalten.html">VERWALTEN</a></li>
       </ul>
     </nav>
   </header>
@@ -30,62 +31,83 @@
 
       <!-- Divider Heading -->
       <div class="divider-heading">
-        <h2>Anmeldung bis am 20. 02.2026</h2>
+        <h2>Anmeldung bis am 20.02.2026</h2>
       </div>
 
       <!-- Form -->
       <section class="form-section">
         <div class="container" style="max-width: 600px;">
 
-          <h3>Anmeldung</h3>
+          <!-- Anmeldeformular -->
+          <div id="form-wrapper">
+            <h3>Anmeldung</h3>
 
-          <form action="#" method="post" novalidate>
+            <div class="form-alert" id="form-error" role="alert"></div>
 
-            <!-- Name + E-mail row -->
-            <div class="form-row">
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Name" required />
+            <form id="register-form" novalidate>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="vorname">Vorname</label>
+                  <input type="text" id="vorname" name="vorname" placeholder="Vorname" autocomplete="given-name" required />
+                </div>
+                <div class="form-group">
+                  <label for="nachname">Nachname</label>
+                  <input type="text" id="nachname" name="nachname" placeholder="Nachname" autocomplete="family-name" required />
+                </div>
               </div>
+
               <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" placeholder="E-mail" required />
+                <label for="email">E-Mail</label>
+                <input type="email" id="email" name="email" placeholder="E-Mail" autocomplete="email" required />
               </div>
+
+              <div class="form-group">
+                <label for="telefon">Telefon</label>
+                <input type="tel" id="telefon" name="telefon" placeholder="Telefon" autocomplete="tel" />
+              </div>
+
+              <span class="form-label-group">Optionen</span>
+              <div class="checkbox-group">
+                <input type="checkbox" id="zimmer" name="zimmer" />
+                <label for="zimmer">Bitte reserviert mir/uns ein Zimmer</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="bus" name="bus" />
+                <label for="bus">Ich/wir möchten mit dem Bus um 22:00 Uhr zurückfahren</label>
+              </div>
+
+              <div class="form-group" style="margin-top: 12px;">
+                <label for="mitteilung">Mitteilung</label>
+                <textarea id="mitteilung" name="mitteilung" placeholder="Mitteilung (optional)" rows="6"></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit" id="submit-btn">Absenden</button>
+            </form>
+          </div>
+
+          <!-- Bestätigung -->
+          <div id="confirmation-wrapper" class="confirmation-card" style="display:none;">
+            <div class="confirmation-check">✓</div>
+            <h3>Danke für Deine Anmeldung!</h3>
+            <p class="confirmation-lead">Wir freuen uns riesig, dass Du am <strong>27. Juni 2026</strong> dabei bist. Eine Bestätigung mit Deinem Code ist unterwegs zu Deiner E-Mail.</p>
+
+            <div class="code-display">
+              <div class="code-display-label">Dein persönlicher Code</div>
+              <div class="code-display-value" id="confirmation-code"></div>
+              <button type="button" class="code-copy-btn" id="copy-code-btn">Code kopieren</button>
             </div>
 
-            <!-- Telefon -->
-            <div class="form-group">
-              <label for="telefon">Telefon</label>
-              <textarea id="telefon" name="telefon" placeholder="Telefon" rows="2"></textarea>
-            </div>
+            <p class="confirmation-note">
+              Mit diesem Code und Deinem Nachnamen kannst Du Deine Anmeldung jederzeit ansehen, ändern oder stornieren.
+              Bewahre den Code gut auf — er steht auch in der Bestätigungs-E-Mail.
+            </p>
 
-            <!-- Optionen -->
-            <span class="form-label-group">Optionen</span>
-            <div class="checkbox-group">
-              <input type="checkbox" id="zimmer" name="optionen[]" value="zimmer" />
-              <label for="zimmer">Bitte reserviert mir/uns ein Zimmer</label>
+            <div class="confirmation-actions">
+              <a href="verwalten.html" class="btn btn-primary">Anmeldung verwalten</a>
+              <a href="index.html" class="btn btn-outline">Zurück zur Startseite</a>
             </div>
-            <div class="checkbox-group">
-              <input type="checkbox" id="bus" name="optionen[]" value="bus" />
-              <label for="bus">Ich/wir möchten mit dem Bus um 22.00h zurückfahren</label>
-            </div>
-
-            <!-- Mitteilung -->
-            <div class="form-group" style="margin-top: 12px;">
-              <label for="mitteilung">Mitteilung</label>
-              <textarea id="mitteilung" name="mitteilung" placeholder="Mitteilung" rows="6"></textarea>
-            </div>
-
-            <!-- Authentifizierungscode (CAPTCHA placeholder) -->
-            <div class="captcha-group">
-              <label for="captcha">Authentifizierungscode</label>
-              <input type="text" id="captcha" name="captcha" placeholder="Code eingeben" />
-            </div>
-
-            <!-- Submit -->
-            <button type="submit" class="btn-submit">Absenden</button>
-
-          </form>
+          </div>
 
         </div>
       </section>
@@ -103,5 +125,65 @@
     </footer>
 
   </div><!-- /.page-body -->
+
+  <script src="assets/config.js"></script>
+  <script src="assets/api.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('register-form');
+      const errEl = document.getElementById('form-error');
+      const btn = document.getElementById('submit-btn');
+      const formWrapper = document.getElementById('form-wrapper');
+      const confirmWrapper = document.getElementById('confirmation-wrapper');
+      const codeEl = document.getElementById('confirmation-code');
+      const copyBtn = document.getElementById('copy-code-btn');
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        ErniAPI.showError(errEl, '');
+
+        const payload = {
+          action: 'register',
+          vorname:    form.vorname.value.trim(),
+          nachname:   form.nachname.value.trim(),
+          email:      form.email.value.trim(),
+          telefon:    form.telefon.value.trim(),
+          zimmer:     form.zimmer.checked,
+          bus:        form.bus.checked,
+          mitteilung: form.mitteilung.value.trim()
+        };
+
+        if (!payload.vorname || !payload.nachname || !payload.email) {
+          ErniAPI.showError(errEl, 'Bitte Vorname, Nachname und E-Mail ausfüllen.');
+          return;
+        }
+
+        ErniAPI.setBusy(btn, true, 'Wird gesendet…');
+        try {
+          const res = await ErniAPI.apiPost(payload);
+          if (!res.ok) throw new Error(res.error || 'Anmeldung fehlgeschlagen.');
+
+          codeEl.textContent = res.code;
+          formWrapper.style.display = 'none';
+          confirmWrapper.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          ErniAPI.showError(errEl, err.message || String(err));
+        } finally {
+          ErniAPI.setBusy(btn, false);
+        }
+      });
+
+      copyBtn.addEventListener('click', async function () {
+        try {
+          await navigator.clipboard.writeText(codeEl.textContent);
+          copyBtn.textContent = 'Kopiert!';
+          setTimeout(() => copyBtn.textContent = 'Code kopieren', 1500);
+        } catch (_) {
+          /* ignore */
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anmeldung verwalten — Erni's - ForeverYoung</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="header-brand">
+      <img src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
+      <span>Erni's - ForeverYoung</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="index.html">START</a></li>
+        <li><a href="details.html">DETAILS</a></li>
+        <li><a href="anmeldung.html">ANMELDUNG</a></li>
+        <li class="active"><a href="verwalten.html">VERWALTEN</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-body">
+    <main>
+
+      <div class="divider-heading">
+        <h2>Anmeldung verwalten</h2>
+      </div>
+
+      <section class="form-section">
+        <div class="container" style="max-width: 600px;">
+
+          <!-- Lookup form -->
+          <div id="lookup-wrapper">
+            <h3>Deine Anmeldung abrufen</h3>
+            <p style="color:#555;font-size:0.95rem;margin-bottom:16px;">
+              Gib Deinen persönlichen Code und Deinen Nachnamen ein. Den Code findest Du in der Bestätigungs-E-Mail, die Du nach der Anmeldung erhalten hast.
+            </p>
+
+            <div class="form-alert" id="lookup-error" role="alert"></div>
+
+            <form id="lookup-form" novalidate>
+              <div class="form-group">
+                <label for="code">Code</label>
+                <input type="text" id="code" name="code" placeholder="z. B. ERNI-XXXX-XXXX" style="text-transform:uppercase;letter-spacing:0.05em;" required />
+              </div>
+              <div class="form-group">
+                <label for="lookup-nachname">Nachname</label>
+                <input type="text" id="lookup-nachname" name="nachname" placeholder="Nachname" autocomplete="family-name" required />
+              </div>
+              <button type="submit" class="btn-submit" id="lookup-btn">Anmeldung anzeigen</button>
+            </form>
+          </div>
+
+          <!-- Edit form -->
+          <div id="edit-wrapper" style="display:none;">
+            <h3>Deine Anmeldung</h3>
+            <p style="color:#555;font-size:0.95rem;margin-bottom:16px;">
+              Du kannst Deine Angaben unten anpassen und mit <strong>Änderungen speichern</strong> bestätigen — oder Deine Anmeldung stornieren.
+            </p>
+
+            <div class="form-alert alert-success" id="edit-success" role="status"></div>
+            <div class="form-alert" id="edit-error" role="alert"></div>
+
+            <div class="code-display code-display-inline">
+              <div class="code-display-label">Code</div>
+              <div class="code-display-value" id="edit-code"></div>
+              <div class="code-display-status" id="edit-status"></div>
+            </div>
+
+            <form id="edit-form" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="edit-vorname">Vorname</label>
+                  <input type="text" id="edit-vorname" name="vorname" placeholder="Vorname" required />
+                </div>
+                <div class="form-group">
+                  <label for="edit-nachname-display">Nachname</label>
+                  <input type="text" id="edit-nachname-display" name="nachname-display" placeholder="Nachname" disabled />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="edit-email">E-Mail</label>
+                <input type="email" id="edit-email" name="email" placeholder="E-Mail" required />
+              </div>
+
+              <div class="form-group">
+                <label for="edit-telefon">Telefon</label>
+                <input type="tel" id="edit-telefon" name="telefon" placeholder="Telefon" />
+              </div>
+
+              <span class="form-label-group">Optionen</span>
+              <div class="checkbox-group">
+                <input type="checkbox" id="edit-zimmer" name="zimmer" />
+                <label for="edit-zimmer">Bitte reserviert mir/uns ein Zimmer</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="edit-bus" name="bus" />
+                <label for="edit-bus">Ich/wir möchten mit dem Bus um 22:00 Uhr zurückfahren</label>
+              </div>
+
+              <div class="form-group" style="margin-top: 12px;">
+                <label for="edit-mitteilung">Mitteilung</label>
+                <textarea id="edit-mitteilung" name="mitteilung" placeholder="Mitteilung" rows="5"></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit" id="save-btn">Änderungen speichern</button>
+            </form>
+
+            <div class="danger-zone">
+              <h4>Anmeldung stornieren</h4>
+              <p>Du kannst nicht teilnehmen? Schade! Mit diesem Button stornierst Du Deine Anmeldung. Wir und Du erhalten eine Bestätigung per E-Mail.</p>
+              <button type="button" class="btn btn-danger" id="cancel-btn">Anmeldung stornieren</button>
+            </div>
+
+            <p style="margin-top:20px;">
+              <a href="verwalten.html">← Eine andere Anmeldung verwalten</a>
+            </p>
+          </div>
+
+          <!-- Cancelled confirmation -->
+          <div id="cancelled-wrapper" class="confirmation-card" style="display:none;">
+            <div class="confirmation-check confirmation-check-neutral">✓</div>
+            <h3>Anmeldung storniert</h3>
+            <p class="confirmation-lead">Deine Anmeldung wurde storniert. Eine Bestätigung ist unterwegs zu Deiner E-Mail. Schade, dass Du nicht dabei sein kannst!</p>
+            <div class="confirmation-actions">
+              <a href="index.html" class="btn btn-primary">Zurück zur Startseite</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <img class="footer-logo" src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
+        <p class="footer-name">Othmar und Christin Erni</p>
+        <p class="footer-location">Adligenswil, Schweiz</p>
+        <p class="footer-copy">Copyright Erni's 2025, Alle Rechte vorbehalten</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/api.js"></script>
+  <script>
+    (function () {
+      const $ = id => document.getElementById(id);
+
+      const lookupWrapper    = $('lookup-wrapper');
+      const editWrapper      = $('edit-wrapper');
+      const cancelledWrapper = $('cancelled-wrapper');
+
+      const lookupForm = $('lookup-form');
+      const lookupErr  = $('lookup-error');
+      const lookupBtn  = $('lookup-btn');
+
+      const editForm   = $('edit-form');
+      const editErr    = $('edit-error');
+      const editOk     = $('edit-success');
+      const saveBtn    = $('save-btn');
+      const cancelBtn  = $('cancel-btn');
+
+      let currentCode = '';
+      let currentNachname = '';
+
+      function fillEdit(r) {
+        $('edit-code').textContent = r.code;
+        $('edit-status').textContent = r.status === 'cancelled' ? 'Status: STORNIERT' : '';
+        $('edit-vorname').value = r.vorname || '';
+        $('edit-nachname-display').value = r.nachname || '';
+        $('edit-email').value = r.email || '';
+        $('edit-telefon').value = r.telefon || '';
+        $('edit-zimmer').checked = r.zimmer === true || r.zimmer === 'true';
+        $('edit-bus').checked = r.bus === true || r.bus === 'true';
+        $('edit-mitteilung').value = r.mitteilung || '';
+
+        const disabled = r.status === 'cancelled';
+        [...editForm.elements].forEach(el => {
+          if (el.id === 'edit-nachname-display') return; // always disabled
+          el.disabled = disabled;
+        });
+        saveBtn.disabled = disabled;
+        cancelBtn.disabled = disabled;
+        if (disabled) {
+          saveBtn.style.display = 'none';
+          cancelBtn.style.display = 'none';
+        } else {
+          saveBtn.style.display = '';
+          cancelBtn.style.display = '';
+        }
+      }
+
+      // -------- Lookup --------
+      lookupForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        ErniAPI.showError(lookupErr, '');
+        const code = $('code').value.trim().toUpperCase();
+        const nachname = $('lookup-nachname').value.trim();
+        if (!code || !nachname) {
+          ErniAPI.showError(lookupErr, 'Bitte Code und Nachname eingeben.');
+          return;
+        }
+        ErniAPI.setBusy(lookupBtn, true, 'Suche…');
+        try {
+          const res = await ErniAPI.apiPost({ action: 'lookup', code, nachname });
+          if (!res.ok) throw new Error(res.error || 'Nicht gefunden.');
+          currentCode = res.record.code;
+          currentNachname = res.record.nachname;
+          fillEdit(res.record);
+          lookupWrapper.style.display = 'none';
+          editWrapper.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          ErniAPI.showError(lookupErr, err.message || String(err));
+        } finally {
+          ErniAPI.setBusy(lookupBtn, false);
+        }
+      });
+
+      // -------- Save edits --------
+      editForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        ErniAPI.showError(editErr, '');
+        ErniAPI.showError(editOk, '');
+        const payload = {
+          action: 'update',
+          code: currentCode,
+          nachname: currentNachname,
+          vorname:    $('edit-vorname').value.trim(),
+          email:      $('edit-email').value.trim(),
+          telefon:    $('edit-telefon').value.trim(),
+          zimmer:     $('edit-zimmer').checked,
+          bus:        $('edit-bus').checked,
+          mitteilung: $('edit-mitteilung').value.trim()
+        };
+        ErniAPI.setBusy(saveBtn, true, 'Speichert…');
+        try {
+          const res = await ErniAPI.apiPost(payload);
+          if (!res.ok) throw new Error(res.error || 'Speichern fehlgeschlagen.');
+          fillEdit(res.record);
+          ErniAPI.showError(editOk, 'Änderungen gespeichert. Eine Bestätigung wurde per E-Mail verschickt.');
+        } catch (err) {
+          ErniAPI.showError(editErr, err.message || String(err));
+        } finally {
+          ErniAPI.setBusy(saveBtn, false);
+        }
+      });
+
+      // -------- Cancel registration --------
+      cancelBtn.addEventListener('click', async function () {
+        ErniAPI.showError(editErr, '');
+        ErniAPI.showError(editOk, '');
+        if (!confirm('Möchtest Du Deine Anmeldung wirklich stornieren? Diese Aktion kann nicht rückgängig gemacht werden.')) return;
+        ErniAPI.setBusy(cancelBtn, true, 'Storniert…');
+        try {
+          const res = await ErniAPI.apiPost({ action: 'cancel', code: currentCode, nachname: currentNachname });
+          if (!res.ok) throw new Error(res.error || 'Stornierung fehlgeschlagen.');
+          editWrapper.style.display = 'none';
+          cancelledWrapper.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          ErniAPI.showError(editErr, err.message || String(err));
+        } finally {
+          ErniAPI.setBusy(cancelBtn, false);
+        }
+      });
+
+      // Prefill code from query string ?code=ERNI-XXXX-XXXX
+      const qp = new URLSearchParams(location.search);
+      if (qp.get('code')) $('code').value = qp.get('code').toUpperCase();
+    })();
+  </script>
+</body>
+</html>
