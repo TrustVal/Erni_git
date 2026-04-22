@@ -5,5 +5,5 @@
 // ---------------------------------------------------------------
 window.ERNI_CONFIG = {
   // Example: "https://script.google.com/macros/s/AKfycb.../exec"
-  API_URL: https://script.google.com/macros/s/AKfycby9Ch0dC7IwHgkOSMS6ztl9ojMyNChwiCDSPecZDAfjm6YlkqLC0vrgS3wgF8IFdhGM/exec
+  API_URL: "https://script.google.com/macros/s/AKfycby9Ch0dC7IwHgkOSMS6ztl9ojMyNChwiCDSPecZDAfjm6YlkqLC0vrgS3wgF8IFdhGM/exec"
 };
