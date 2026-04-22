@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Erni's - ForeverYoung</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .hero-section {
+      position: relative;
+      background-image: none !important;
+      overflow: hidden;
+    }
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-slides .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      animation: slideShow 12s infinite;
+    }
+    .hero-slides .slide:nth-child(1) {
+      background-image: url('assets/images/hermitage_events_apero_am_see.webp');
+      animation-delay: 0s;
+    }
+    .hero-slides .slide:nth-child(2) {
+      background-image: url('assets/images/Day-Dance-von-oben_2023-06-27-135048_kiig.webp');
+      animation-delay: 6s;
+    }
+    @keyframes slideShow {
+      0%   { opacity: 0; }
+      5%   { opacity: 1; }
+      45%  { opacity: 1; }
+      55%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .hero-section::before { z-index: 1; }
+    .hero-section > *:not(.hero-slides) { position: relative; z-index: 2; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="header-brand">
+      <img src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
+      <span>Erni's - ForeverYoung</span>
+    </a>
+    <nav>
+      <ul>
+        <li class="active"><a href="index.html">START</a></li>
+        <li><a href="details.html">DETAILS</a></li>
+        <li><a href="anmeldung.html">ANMELDUNG</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="page-body">
+    <section class="hero-section">
+      <div class="hero-slides">
+        <div class="slide"></div>
+        <div class="slide"></div>
+      </div>
+      <h1>Lasst uns das Leben feiern!</h1>
+      <p class="hero-subtitle">Wir laden am 27. Juni 2026 zum Day-Dance im Beach Club vom Hotel Hermitage in Luzern ein.</p>
+    </section>
+    <section class="hero-double">
+      <div class="hero-double-inner">
+        <h2>
+          <span class="line1">Wir feiern den 50. von Christin und den 60. von Othmar</span>
+          <span class="line2">im Beach Club vom Hotel Hermitage ab 15.00 Uhr</span>
+        </h2>
+      </div>
+    </section>
+    <section class="cta-section">
+      <div class="container">
+        <p>Alle relevanten Informationen für dieses unvergessliche Fest:</p>
+        <div class="cta-buttons">
+          <a href="details.html" class="btn btn-primary">Details</a>
+          <a href="anmeldung.html" class="btn btn-outline">Anmeldung</a>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="footer-inner">
+        <img class="footer-logo" src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
+        <p class="footer-name">Othmar und Christin Erni</p>
+        <p class="footer-location">Adligenswil, Schweiz</p>
+        <p class="footer-copy">Copyright Erni's 2025, Alle Rechte vorbehalten</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

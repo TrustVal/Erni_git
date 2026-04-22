@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anmeldung — Erni's - ForeverYoung</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="header-brand">
+      <img src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
+      <span>Erni's - ForeverYoung</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="index.html">START</a></li>
+        <li><a href="details.html">DETAILS</a></li>
+        <li class="active"><a href="anmeldung.html">ANMELDUNG</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- PAGE BODY -->
+  <div class="page-body">
+
+    <main>
+
+      <!-- Divider Heading -->
+      <div class="divider-heading">
+        <h2>Anmeldung bis am 20. 02.2026</h2>
+      </div>
+
+      <!-- Form -->
+      <section class="form-section">
+        <div class="container" style="max-width: 600px;">
+
+          <h3>Anmeldung</h3>
+
+          <form action="#" method="post" novalidate>
+
+            <!-- Name + E-mail row -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="E-mail" required />
+              </div>
+            </div>
+
+            <!-- Telefon -->
+            <div class="form-group">
+              <label for="telefon">Telefon</label>
+              <textarea id="telefon" name="telefon" placeholder="Telefon" rows="2"></textarea>
+            </div>
+
+            <!-- Optionen -->
+            <span class="form-label-group">Optionen</span>
+            <div class="checkbox-group">
+              <input type="checkbox" id="zimmer" name="optionen[]" value="zimmer" />
+              <label for="zimmer">Bitte reserviert mir/uns ein Zimmer</label>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="bus" name="optionen[]" value="bus" />
+              <label for="bus">Ich/wir möchten mit dem Bus um 22.00h zurückfahren</label>
+            </div>
+
+            <!-- Mitteilung -->
+            <div class="form-group" style="margin-top: 12px;">
+              <label for="mitteilung">Mitteilung</label>
+              <textarea id="mitteilung" name="mitteilung" placeholder="Mitteilung" rows="6"></textarea>
+            </div>
+
+            <!-- Authentifizierungscode (CAPTCHA placeholder) -->
+            <div class="captcha-group">
+              <label for="captcha">Authentifizierungscode</label>
+              <input type="text" id="captcha" name="captcha" placeholder="Code eingeben" />
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-submit">Absenden</button>
+
+          </form>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <img class="footer-logo" src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
+        <p class="footer-name">Othmar und Christin Erni</p>
+        <p class="footer-location">Adligenswil, Schweiz</p>
+        <p class="footer-copy">Copyright Erni's 2025, Alle Rechte vorbehalten</p>
+      </div>
+    </footer>
+
+  </div><!-- /.page-body -->
+</body>
+</html>
