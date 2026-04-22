@@ -69,6 +69,14 @@
 
               <span class="form-label-group">Optionen</span>
               <div class="checkbox-group">
+                <input type="checkbox" id="partner" name="partner" />
+                <label for="partner">Ich komme mit Partner/Partnerin</label>
+              </div>
+              <div class="conditional-field" id="partner-name-wrap" style="display:none;">
+                <label for="partnerName">Name der Begleitung</label>
+                <input type="text" id="partnerName" name="partnerName" placeholder="Vor- und Nachname der Begleitung" />
+              </div>
+              <div class="checkbox-group">
                 <input type="checkbox" id="zimmer" name="zimmer" />
                 <label for="zimmer">Bitte reserviert mir/uns ein Zimmer</label>
               </div>
@@ -138,19 +146,29 @@
       const codeEl = document.getElementById('confirmation-code');
       const copyBtn = document.getElementById('copy-code-btn');
 
+      // Conditional reveal: show partner name field only when checkbox is ticked.
+      const partnerCb = form.partner;
+      const partnerNameWrap = document.getElementById('partner-name-wrap');
+      partnerCb.addEventListener('change', function () {
+        partnerNameWrap.style.display = partnerCb.checked ? 'block' : 'none';
+        if (!partnerCb.checked) form.partnerName.value = '';
+      });
+
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
         ErniAPI.showError(errEl, '');
 
         const payload = {
           action: 'register',
-          vorname:    form.vorname.value.trim(),
-          nachname:   form.nachname.value.trim(),
-          email:      form.email.value.trim(),
-          telefon:    form.telefon.value.trim(),
-          zimmer:     form.zimmer.checked,
-          bus:        form.bus.checked,
-          mitteilung: form.mitteilung.value.trim()
+          vorname:     form.vorname.value.trim(),
+          nachname:    form.nachname.value.trim(),
+          email:       form.email.value.trim(),
+          telefon:     form.telefon.value.trim(),
+          partner:     form.partner.checked,
+          partnerName: form.partner.checked ? form.partnerName.value.trim() : '',
+          zimmer:      form.zimmer.checked,
+          bus:         form.bus.checked,
+          mitteilung:  form.mitteilung.value.trim()
         };
 
         if (!payload.vorname || !payload.nachname || !payload.email) {

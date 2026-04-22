@@ -95,6 +95,14 @@
 
               <span class="form-label-group">Optionen</span>
               <div class="checkbox-group">
+                <input type="checkbox" id="edit-partner" name="partner" />
+                <label for="edit-partner">Ich komme mit Partner/Partnerin</label>
+              </div>
+              <div class="conditional-field" id="edit-partner-name-wrap" style="display:none;">
+                <label for="edit-partnerName">Name der Begleitung</label>
+                <input type="text" id="edit-partnerName" name="partnerName" placeholder="Vor- und Nachname der Begleitung" />
+              </div>
+              <div class="checkbox-group">
                 <input type="checkbox" id="edit-zimmer" name="zimmer" />
                 <label for="edit-zimmer">Bitte reserviert mir/uns ein Zimmer</label>
               </div>
@@ -177,6 +185,9 @@
         $('edit-nachname-display').value = r.nachname || '';
         $('edit-email').value = r.email || '';
         $('edit-telefon').value = r.telefon || '';
+        $('edit-partner').checked = r.partner === true || r.partner === 'true';
+        $('edit-partnerName').value = r.partnerName || '';
+        $('edit-partner-name-wrap').style.display = $('edit-partner').checked ? 'block' : 'none';
         $('edit-zimmer').checked = r.zimmer === true || r.zimmer === 'true';
         $('edit-bus').checked = r.bus === true || r.bus === 'true';
         $('edit-mitteilung').value = r.mitteilung || '';
@@ -196,6 +207,13 @@
           cancelBtn.style.display = '';
         }
       }
+
+      // Conditional reveal of partner name field.
+      $('edit-partner').addEventListener('change', function () {
+        const show = $('edit-partner').checked;
+        $('edit-partner-name-wrap').style.display = show ? 'block' : 'none';
+        if (!show) $('edit-partnerName').value = '';
+      });
 
       // -------- Lookup --------
       lookupForm.addEventListener('submit', async function (e) {
@@ -229,16 +247,19 @@
         e.preventDefault();
         ErniAPI.showError(editErr, '');
         ErniAPI.showError(editOk, '');
+        const partnerChecked = $('edit-partner').checked;
         const payload = {
           action: 'update',
           code: currentCode,
           nachname: currentNachname,
-          vorname:    $('edit-vorname').value.trim(),
-          email:      $('edit-email').value.trim(),
-          telefon:    $('edit-telefon').value.trim(),
-          zimmer:     $('edit-zimmer').checked,
-          bus:        $('edit-bus').checked,
-          mitteilung: $('edit-mitteilung').value.trim()
+          vorname:     $('edit-vorname').value.trim(),
+          email:       $('edit-email').value.trim(),
+          telefon:     $('edit-telefon').value.trim(),
+          partner:     partnerChecked,
+          partnerName: partnerChecked ? $('edit-partnerName').value.trim() : '',
+          zimmer:      $('edit-zimmer').checked,
+          bus:         $('edit-bus').checked,
+          mitteilung:  $('edit-mitteilung').value.trim()
         };
         ErniAPI.setBusy(saveBtn, true, 'Speichert…');
         try {

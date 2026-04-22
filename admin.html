@@ -64,6 +64,7 @@
                     <th>Name</th>
                     <th>E-Mail</th>
                     <th>Telefon</th>
+                    <th>Begleitung</th>
                     <th>Zimmer</th>
                     <th>Bus</th>
                     <th>Mitteilung</th>
@@ -114,34 +115,41 @@
 
       function renderTotals(t) {
         $('admin-totals').innerHTML = `
-          <span class="admin-pill admin-pill-primary">Aktiv: <strong>${t.active}</strong></span>
+          <span class="admin-pill admin-pill-primary">Gäste gesamt: <strong>${t.guests != null ? t.guests : t.active}</strong></span>
+          <span class="admin-pill">Anmeldungen aktiv: <strong>${t.active}</strong></span>
+          <span class="admin-pill">Mit Begleitung: <strong>${t.partner || 0}</strong></span>
           <span class="admin-pill">Zimmer: <strong>${t.zimmer}</strong></span>
           <span class="admin-pill">Bus: <strong>${t.bus}</strong></span>
           <span class="admin-pill admin-pill-muted">Storniert: <strong>${t.cancelled}</strong></span>
-          <span class="admin-pill admin-pill-muted">Gesamt: <strong>${t.total}</strong></span>
         `;
       }
 
       function renderRows(rows) {
         const tbody = $('admin-table').querySelector('tbody');
         if (!rows.length) {
-          tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:#777;padding:24px;">Noch keine Anmeldungen.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;color:#777;padding:24px;">Noch keine Anmeldungen.</td></tr>';
           return;
         }
-        tbody.innerHTML = rows.map(r => `
-          <tr class="${r.status === 'cancelled' ? 'row-cancelled' : ''}">
-            <td class="mono">${escapeHtml(r.code)}</td>
-            <td>${r.status === 'cancelled' ? '<span class="tag tag-muted">storniert</span>' : '<span class="tag tag-ok">aktiv</span>'}</td>
-            <td>${escapeHtml(r.vorname)} ${escapeHtml(r.nachname)}</td>
-            <td><a href="mailto:${encodeURIComponent(r.email)}">${escapeHtml(r.email)}</a></td>
-            <td>${escapeHtml(r.telefon)}</td>
-            <td>${yes(r.zimmer)}</td>
-            <td>${yes(r.bus)}</td>
-            <td class="col-note">${escapeHtml(r.mitteilung)}</td>
-            <td>${fmtDate(r.createdAt)}</td>
-            <td>${fmtDate(r.updatedAt)}</td>
-          </tr>
-        `).join('');
+        tbody.innerHTML = rows.map(r => {
+          const partnerCell = (r.partner === true || r.partner === 'true')
+            ? 'Ja' + (r.partnerName ? ' — ' + escapeHtml(r.partnerName) : '')
+            : 'Nein';
+          return `
+            <tr class="${r.status === 'cancelled' ? 'row-cancelled' : ''}">
+              <td class="mono">${escapeHtml(r.code)}</td>
+              <td>${r.status === 'cancelled' ? '<span class="tag tag-muted">storniert</span>' : '<span class="tag tag-ok">aktiv</span>'}</td>
+              <td>${escapeHtml(r.vorname)} ${escapeHtml(r.nachname)}</td>
+              <td><a href="mailto:${encodeURIComponent(r.email)}">${escapeHtml(r.email)}</a></td>
+              <td>${escapeHtml(r.telefon)}</td>
+              <td>${partnerCell}</td>
+              <td>${yes(r.zimmer)}</td>
+              <td>${yes(r.bus)}</td>
+              <td class="col-note">${escapeHtml(r.mitteilung)}</td>
+              <td>${fmtDate(r.createdAt)}</td>
+              <td>${fmtDate(r.updatedAt)}</td>
+            </tr>
+          `;
+        }).join('');
       }
 
       async function load() {
@@ -157,7 +165,7 @@
       }
 
       function toCSV(rows) {
-        const headers = ['code','status','vorname','nachname','email','telefon','zimmer','bus','mitteilung','createdAt','updatedAt'];
+        const headers = ['code','status','vorname','nachname','email','telefon','partner','partnerName','zimmer','bus','mitteilung','createdAt','updatedAt'];
         const esc = v => {
           const s = String(v == null ? '' : v);
           return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;

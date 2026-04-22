@@ -18,6 +18,7 @@ const SHEET_NAME = 'Anmeldungen';
 const HEADERS = [
   'code', 'createdAt', 'updatedAt', 'status',
   'vorname', 'nachname', 'email', 'telefon',
+  'partner', 'partnerName',
   'zimmer', 'bus', 'mitteilung'
 ];
 // Alphabet excludes 0,O,1,I,L for readability.
@@ -72,28 +73,28 @@ function handleRegister(b) {
   try {
     const code = generateUniqueCode(sheet);
     const now  = new Date();
+    const partner     = !!b.partner;
+    const partnerName = partner ? sanitize(b.partnerName) : '';
     const row = [
       code, now, now, 'active',
       vorname, nachname, email,
       sanitize(b.telefon),
+      partner, partnerName,
       !!b.zimmer, !!b.bus,
       sanitize(b.mitteilung)
     ];
     sheet.appendRow(row);
 
-    sendConfirmationEmail({
+    const record = {
       code, vorname, nachname, email,
       telefon: sanitize(b.telefon),
-      zimmer: !!b.zimmer, bus: !!b.bus,
-      mitteilung: sanitize(b.mitteilung)
-    });
-    notifyAdmin('Neue Anmeldung', formatRecord({
-      code, vorname, nachname, email,
-      telefon: sanitize(b.telefon),
+      partner, partnerName,
       zimmer: !!b.zimmer, bus: !!b.bus,
       mitteilung: sanitize(b.mitteilung),
       status: 'active'
-    }));
+    };
+    sendConfirmationEmail(record);
+    notifyAdmin('Neue Anmeldung', formatRecord(record));
 
     return { ok: true, code: code };
   } finally {
@@ -117,12 +118,21 @@ function handleUpdate(b) {
   const sheet = getSheet();
   const rIndex = row.rowIndex;
   // Updatable fields only:
-  if (b.vorname    !== undefined) sheet.getRange(rIndex, col('vorname')+1).setValue(sanitize(b.vorname));
-  if (b.email      !== undefined) sheet.getRange(rIndex, col('email')+1).setValue(sanitize(b.email));
-  if (b.telefon    !== undefined) sheet.getRange(rIndex, col('telefon')+1).setValue(sanitize(b.telefon));
-  if (b.zimmer     !== undefined) sheet.getRange(rIndex, col('zimmer')+1).setValue(!!b.zimmer);
-  if (b.bus        !== undefined) sheet.getRange(rIndex, col('bus')+1).setValue(!!b.bus);
-  if (b.mitteilung !== undefined) sheet.getRange(rIndex, col('mitteilung')+1).setValue(sanitize(b.mitteilung));
+  if (b.vorname     !== undefined) sheet.getRange(rIndex, col('vorname')+1).setValue(sanitize(b.vorname));
+  if (b.email       !== undefined) sheet.getRange(rIndex, col('email')+1).setValue(sanitize(b.email));
+  if (b.telefon     !== undefined) sheet.getRange(rIndex, col('telefon')+1).setValue(sanitize(b.telefon));
+  if (b.partner     !== undefined) {
+    const p = !!b.partner;
+    sheet.getRange(rIndex, col('partner')+1).setValue(p);
+    // If partner is unchecked, clear the name; else update it when provided.
+    if (!p) sheet.getRange(rIndex, col('partnerName')+1).setValue('');
+    else if (b.partnerName !== undefined) sheet.getRange(rIndex, col('partnerName')+1).setValue(sanitize(b.partnerName));
+  } else if (b.partnerName !== undefined) {
+    sheet.getRange(rIndex, col('partnerName')+1).setValue(sanitize(b.partnerName));
+  }
+  if (b.zimmer      !== undefined) sheet.getRange(rIndex, col('zimmer')+1).setValue(!!b.zimmer);
+  if (b.bus         !== undefined) sheet.getRange(rIndex, col('bus')+1).setValue(!!b.bus);
+  if (b.mitteilung  !== undefined) sheet.getRange(rIndex, col('mitteilung')+1).setValue(sanitize(b.mitteilung));
   sheet.getRange(rIndex, col('updatedAt')+1).setValue(new Date());
 
   const updated = rowToObject(sheet.getRange(rIndex, 1, 1, HEADERS.length).getValues()[0]);
@@ -245,15 +255,19 @@ function sanitize(v) {
 
 function computeTotals(records) {
   const active = records.filter(r => r.status !== 'cancelled');
+  const withPartner = active.filter(r => r.partner === true || r.partner === 'true').length;
   return {
     total: records.length,
     active: active.length,
     cancelled: records.length - active.length,
+    // Guest head-count: each active RSVP counts 1, +1 if partner.
+    guests: active.length + withPartner,
+    partner: withPartner,
     zimmer: active.filter(r => r.zimmer === true || r.zimmer === 'true').length,
     bus: active.filter(r => r.bus === true || r.bus === 'true').length
   };
 }
-function emptyTotals() { return { total: 0, active: 0, cancelled: 0, zimmer: 0, bus: 0 }; }
+function emptyTotals() { return { total: 0, active: 0, cancelled: 0, guests: 0, partner: 0, zimmer: 0, bus: 0 }; }
 
 // ---------- Email ----------
 
@@ -332,6 +346,7 @@ function buildEmailHtml(o) {
         <tr><td style="padding:6px 0;color:#777;width:40%;">Name</td><td style="padding:6px 0;">${escapeHtml(r.vorname)} ${escapeHtml(r.nachname)}</td></tr>
         <tr><td style="padding:6px 0;color:#777;">E-Mail</td><td style="padding:6px 0;">${escapeHtml(r.email)}</td></tr>
         <tr><td style="padding:6px 0;color:#777;">Telefon</td><td style="padding:6px 0;">${escapeHtml(r.telefon) || '—'}</td></tr>
+        <tr><td style="padding:6px 0;color:#777;">Mit Begleitung</td><td style="padding:6px 0;">${yes(r.partner)}${(r.partner && r.partnerName) ? ' (' + escapeHtml(r.partnerName) + ')' : ''}</td></tr>
         <tr><td style="padding:6px 0;color:#777;">Zimmer reservieren</td><td style="padding:6px 0;">${yes(r.zimmer)}</td></tr>
         <tr><td style="padding:6px 0;color:#777;">Bus 22:00 Uhr</td><td style="padding:6px 0;">${yes(r.bus)}</td></tr>
         <tr><td style="padding:6px 0;color:#777;vertical-align:top;">Mitteilung</td><td style="padding:6px 0;white-space:pre-wrap;">${escapeHtml(r.mitteilung) || '—'}</td></tr>
@@ -354,6 +369,7 @@ function formatRecord(r) {
     'Name: ' + r.vorname + ' ' + r.nachname,
     'E-Mail: ' + r.email,
     'Telefon: ' + (r.telefon || '—'),
+    'Begleitung: ' + (r.partner ? ('Ja' + (r.partnerName ? ' (' + r.partnerName + ')' : '')) : 'Nein'),
     'Zimmer: ' + (r.zimmer ? 'Ja' : 'Nein'),
     'Bus: ' + (r.bus ? 'Ja' : 'Nein'),
     'Mitteilung: ' + (r.mitteilung || '—')
