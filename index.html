@@ -22,23 +22,9 @@
       background-size: cover;
       background-position: center;
       opacity: 0;
-      animation: slideShow 12s infinite;
+      transition: opacity 1.5s ease-in-out;
     }
-    .hero-slides .slide:nth-child(1) {
-      background-image: url('assets/images/hermitage_events_apero_am_see.webp');
-      animation-delay: 0s;
-    }
-    .hero-slides .slide:nth-child(2) {
-      background-image: url('assets/images/Day-Dance-von-oben_2023-06-27-135048_kiig.webp');
-      animation-delay: 6s;
-    }
-    @keyframes slideShow {
-      0%   { opacity: 0; }
-      5%   { opacity: 1; }
-      45%  { opacity: 1; }
-      55%  { opacity: 0; }
-      100% { opacity: 0; }
-    }
+    .hero-slides .slide.is-active { opacity: 1; }
     .hero-section::before { z-index: 1; }
     .hero-section > *:not(.hero-slides) { position: relative; z-index: 2; }
   </style>
@@ -46,7 +32,6 @@
 <body>
   <header>
     <a href="index.html" class="header-brand">
-      <img src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
       <span>Erni's - ForeverYoung</span>
     </a>
     <nav>
@@ -60,10 +45,7 @@
   </header>
   <div class="page-body">
     <section class="hero-section hero-poster">
-      <div class="hero-slides">
-        <div class="slide"></div>
-        <div class="slide"></div>
-      </div>
+      <div class="hero-slides" id="heroSlides"></div>
       <div class="hero-content">
         <h1 class="hero-brand">FOREVER YOUNG</h1>
         <p class="hero-tagline-small">die</p>
@@ -86,12 +68,86 @@
     </section>
     <footer>
       <div class="footer-inner">
-        <img class="footer-logo" src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
         <p class="footer-name">Othmar und Christin Erni</p>
         <p class="footer-location">Adligenswil, Schweiz</p>
         <p class="footer-copy">Copyright Erni's 2025, Alle Rechte vorbehalten</p>
       </div>
     </footer>
   </div>
+
+  <script>
+  (function () {
+    // Hero slideshow: rotate through Fotos + 2 original hero images.
+    const images = [
+      'assets/images/hermitage_events_apero_am_see.webp',
+      'assets/images/Day-Dance-von-oben_2023-06-27-135048_kiig.webp',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.22.jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.22%20(1).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.23.jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.23%20(1).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.23%20(2).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.23%20(3).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.23%20(4).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.23%20(5).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.23%20(6).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24.jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(1).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(2).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(3).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(4).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(5).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(6).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(7).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.24%20(8).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25.jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25%20(1).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25%20(2).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25%20(3).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25%20(4).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25%20(5).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25%20(6).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.25%20(7).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.26.jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.26%20(1).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.26%20(2).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.26%20(3).jpeg',
+      'assets/Fotos/WhatsApp%20Image%202026-04-05%20at%2008.02.26%20(4).jpeg'
+    ];
+
+    const container = document.getElementById('heroSlides');
+    if (!container || !images.length) return;
+
+    // Two layered slides for smooth crossfade.
+    const a = document.createElement('div'); a.className = 'slide is-active';
+    const b = document.createElement('div'); b.className = 'slide';
+    container.appendChild(a); container.appendChild(b);
+
+    let idx = 0;
+    a.style.backgroundImage = 'url("' + images[0] + '")';
+
+    function preload(src) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = img.onerror = () => resolve();
+        img.src = src;
+      });
+    }
+
+    async function cycle() {
+      idx = (idx + 1) % images.length;
+      const next = images[idx];
+      await preload(next);
+      const active = a.classList.contains('is-active') ? a : b;
+      const inactive = active === a ? b : a;
+      inactive.style.backgroundImage = 'url("' + next + '")';
+      inactive.classList.add('is-active');
+      active.classList.remove('is-active');
+    }
+
+    // Preload the next image soon; then run on interval.
+    preload(images[1 % images.length]);
+    setInterval(cycle, 5000);
+  })();
+  </script>
 </body>
 </html>

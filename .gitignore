@@ -5,3 +5,6 @@
 .vscode/
 .idea/
 *.swp
+
+# FUSE tmp files from in-place edits
+.fuse_hidden*

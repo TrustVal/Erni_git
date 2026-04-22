@@ -10,7 +10,6 @@
 
   <header>
     <a href="index.html" class="header-brand">
-      <img src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
       <span>Erni's - ForeverYoung</span>
     </a>
     <nav>
@@ -103,10 +102,6 @@
                 <input type="text" id="edit-partnerName" name="partnerName" placeholder="Vor- und Nachname der Begleitung" />
               </div>
               <div class="checkbox-group">
-                <input type="checkbox" id="edit-zimmer" name="zimmer" />
-                <label for="edit-zimmer">Bitte reserviert mir/uns ein Zimmer</label>
-              </div>
-              <div class="checkbox-group">
                 <input type="checkbox" id="edit-bus" name="bus" />
                 <label for="edit-bus">Ich/wir möchten mit dem Bus um 22:00 Uhr zurückfahren</label>
               </div>
@@ -147,7 +142,6 @@
 
     <footer>
       <div class="footer-inner">
-        <img class="footer-logo" src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
         <p class="footer-name">Othmar und Christin Erni</p>
         <p class="footer-location">Adligenswil, Schweiz</p>
         <p class="footer-copy">Copyright Erni's 2025, Alle Rechte vorbehalten</p>
@@ -188,7 +182,7 @@
         $('edit-partner').checked = r.partner === true || r.partner === 'true';
         $('edit-partnerName').value = r.partnerName || '';
         $('edit-partner-name-wrap').style.display = $('edit-partner').checked ? 'block' : 'none';
-        $('edit-zimmer').checked = r.zimmer === true || r.zimmer === 'true';
+        // zimmer field is no longer shown; preserve whatever value the record has
         $('edit-bus').checked = r.bus === true || r.bus === 'true';
         $('edit-mitteilung').value = r.mitteilung || '';
 
@@ -257,7 +251,7 @@
           telefon:     $('edit-telefon').value.trim(),
           partner:     partnerChecked,
           partnerName: partnerChecked ? $('edit-partnerName').value.trim() : '',
-          zimmer:      $('edit-zimmer').checked,
+          // zimmer intentionally omitted — form has no more Zimmer checkbox; backend leaves existing value
           bus:         $('edit-bus').checked,
           mitteilung:  $('edit-mitteilung').value.trim()
         };

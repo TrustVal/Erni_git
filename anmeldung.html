@@ -11,7 +11,6 @@
   <!-- HEADER -->
   <header>
     <a href="index.html" class="header-brand">
-      <img src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
       <span>Erni's - ForeverYoung</span>
     </a>
     <nav>
@@ -31,7 +30,7 @@
 
       <!-- Divider Heading -->
       <div class="divider-heading">
-        <h2>Anmeldung bis am 20.02.2026</h2>
+        <h2>Anmeldung bis am 10.05.2026</h2>
       </div>
 
       <!-- Form -->
@@ -75,10 +74,6 @@
               <div class="conditional-field" id="partner-name-wrap" style="display:none;">
                 <label for="partnerName">Name der Begleitung</label>
                 <input type="text" id="partnerName" name="partnerName" placeholder="Vor- und Nachname der Begleitung" />
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="zimmer" name="zimmer" />
-                <label for="zimmer">Bitte reserviert mir/uns ein Zimmer</label>
               </div>
               <div class="checkbox-group">
                 <input type="checkbox" id="bus" name="bus" />
@@ -125,7 +120,6 @@
     <!-- FOOTER -->
     <footer>
       <div class="footer-inner">
-        <img class="footer-logo" src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />
         <p class="footer-name">Othmar und Christin Erni</p>
         <p class="footer-location">Adligenswil, Schweiz</p>
         <p class="footer-copy">Copyright Erni's 2025, Alle Rechte vorbehalten</p>
@@ -166,7 +160,7 @@
           telefon:     form.telefon.value.trim(),
           partner:     form.partner.checked,
           partnerName: form.partner.checked ? form.partnerName.value.trim() : '',
-          zimmer:      form.zimmer.checked,
+          zimmer:      false,
           bus:         form.bus.checked,
           mitteilung:  form.mitteilung.value.trim()
         };
