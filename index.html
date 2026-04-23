@@ -22,9 +22,23 @@
       background-size: cover;
       background-position: center;
       opacity: 0;
-      transition: opacity 1.5s ease-in-out;
+      animation: slideShow 12s infinite;
     }
-    .hero-slides .slide.is-active { opacity: 1; }
+    .hero-slides .slide:nth-child(1) {
+      background-image: url('assets/images/hermitage_events_apero_am_see.webp');
+      animation-delay: 0s;
+    }
+    .hero-slides .slide:nth-child(2) {
+      background-image: url('assets/images/Day-Dance-von-oben_2023-06-27-135048_kiig.webp');
+      animation-delay: 6s;
+    }
+    @keyframes slideShow {
+      0%   { opacity: 0; }
+      5%   { opacity: 1; }
+      45%  { opacity: 1; }
+      55%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
     .hero-section::before { z-index: 1; }
     .hero-section > *:not(.hero-slides) { position: relative; z-index: 2; }
   </style>
@@ -45,7 +59,10 @@
   </header>
   <div class="page-body">
     <section class="hero-section hero-poster">
-      <div class="hero-slides" id="heroSlides"></div>
+      <div class="hero-slides">
+        <div class="slide"></div>
+        <div class="slide"></div>
+      </div>
       <div class="hero-content">
         <h1 class="hero-brand">FOREVER YOUNG</h1>
         <p class="hero-tagline-small">die</p>
@@ -64,11 +81,17 @@
           <a href="details.html" class="btn btn-primary">Details</a>
           <a href="anmeldung.html" class="btn btn-outline">Anmeldung</a>
         </div>
+        <div class="frames-gallery" id="framesGallery">
+          <div class="photo-frame" id="frame0"></div>
+          <div class="photo-frame" id="frame1"></div>
+          <div class="photo-frame" id="frame2"></div>
+          <div class="photo-frame" id="frame3"></div>
+        </div>
       </div>
     </section>
     <footer>
       <div class="footer-inner">
-        <p class="footer-name">Othmar und Christin Erni</p>
+        <img class="footer-logo" src="assets/images/ernislogo.svg" alt="Erni's - ForeverYoung" />        <p class="footer-name">Othmar und Christin Erni</p>
         <p class="footer-location">Adligenswil, Schweiz</p>
         <p class="footer-copy">Copyright Erni's 2025, Alle Rechte vorbehalten</p>
       </div>
@@ -77,76 +100,96 @@
 
   <script>
   (function () {
-    // Hero slideshow: 2 original hero images + 31 event photos.
-    const images = [
-      'assets/images/hermitage_events_apero_am_see.webp',
-      'assets/images/Day-Dance-von-oben_2023-06-27-135048_kiig.webp',
-      'assets/Fotos/foto-01.jpeg',
-      'assets/Fotos/foto-02.jpeg',
-      'assets/Fotos/foto-03.jpeg',
-      'assets/Fotos/foto-04.jpeg',
-      'assets/Fotos/foto-05.jpeg',
-      'assets/Fotos/foto-06.jpeg',
-      'assets/Fotos/foto-07.jpeg',
-      'assets/Fotos/foto-08.jpeg',
-      'assets/Fotos/foto-09.jpeg',
-      'assets/Fotos/foto-10.jpeg',
-      'assets/Fotos/foto-11.jpeg',
-      'assets/Fotos/foto-12.jpeg',
-      'assets/Fotos/foto-13.jpeg',
-      'assets/Fotos/foto-14.jpeg',
-      'assets/Fotos/foto-15.jpeg',
-      'assets/Fotos/foto-16.jpeg',
-      'assets/Fotos/foto-17.jpeg',
-      'assets/Fotos/foto-18.jpeg',
-      'assets/Fotos/foto-19.jpeg',
-      'assets/Fotos/foto-20.jpeg',
-      'assets/Fotos/foto-21.jpeg',
-      'assets/Fotos/foto-22.jpeg',
-      'assets/Fotos/foto-23.jpeg',
-      'assets/Fotos/foto-24.jpeg',
-      'assets/Fotos/foto-25.jpeg',
-      'assets/Fotos/foto-26.jpeg',
-      'assets/Fotos/foto-27.jpeg',
-      'assets/Fotos/foto-28.jpeg',
-      'assets/Fotos/foto-29.jpeg',
-      'assets/Fotos/foto-30.jpeg',
+    // Frames gallery: 4 photo frames in the white CTA area.
+    // Each frame holds two <img> layers and crossfades between them.
+    // Photos are split into 4 segments so all 4 frames show different shots simultaneously.
+    const photos = [
+      'assets/Fotos/foto-01.jpeg', 'assets/Fotos/foto-02.jpeg',
+      'assets/Fotos/foto-03.jpeg', 'assets/Fotos/foto-04.jpeg',
+      'assets/Fotos/foto-05.jpeg', 'assets/Fotos/foto-06.jpeg',
+      'assets/Fotos/foto-07.jpeg', 'assets/Fotos/foto-08.jpeg',
+      'assets/Fotos/foto-09.jpeg', 'assets/Fotos/foto-10.jpeg',
+      'assets/Fotos/foto-11.jpeg', 'assets/Fotos/foto-12.jpeg',
+      'assets/Fotos/foto-13.jpeg', 'assets/Fotos/foto-14.jpeg',
+      'assets/Fotos/foto-15.jpeg', 'assets/Fotos/foto-16.jpeg',
+      'assets/Fotos/foto-17.jpeg', 'assets/Fotos/foto-18.jpeg',
+      'assets/Fotos/foto-19.jpeg', 'assets/Fotos/foto-20.jpeg',
+      'assets/Fotos/foto-21.jpeg', 'assets/Fotos/foto-22.jpeg',
+      'assets/Fotos/foto-23.jpeg', 'assets/Fotos/foto-24.jpeg',
+      'assets/Fotos/foto-25.jpeg', 'assets/Fotos/foto-26.jpeg',
+      'assets/Fotos/foto-27.jpeg', 'assets/Fotos/foto-28.jpeg',
+      'assets/Fotos/foto-29.jpeg', 'assets/Fotos/foto-30.jpeg',
       'assets/Fotos/foto-31.jpeg'
     ];
 
-    const container = document.getElementById('heroSlides');
-    if (!container || !images.length) return;
-
-    // Two layered slides for smooth crossfade.
-    const a = document.createElement('div'); a.className = 'slide is-active';
-    const b = document.createElement('div'); b.className = 'slide';
-    container.appendChild(a); container.appendChild(b);
-
-    let idx = 0;
-    a.style.backgroundImage = 'url("' + images[0] + '")';
-
-    function preload(src) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = img.onerror = () => resolve();
-        img.src = src;
-      });
+    function shuffle(a) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
     }
 
-    async function cycle() {
-      idx = (idx + 1) % images.length;
-      const next = images[idx];
-      await preload(next);
-      const active = a.classList.contains('is-active') ? a : b;
-      const inactive = active === a ? b : a;
-      inactive.style.backgroundImage = 'url("' + next + '")';
-      inactive.classList.add('is-active');
-      active.classList.remove('is-active');
+    function makeQueue(pool) { return shuffle(pool.slice()); }
+
+    function buildFrame(el, firstSrc) {
+      const inner = document.createElement('div');
+      inner.className = 'photo-frame-inner';
+      const img1 = document.createElement('img');
+      img1.className = 'frame-img active';
+      img1.src = firstSrc;
+      img1.alt = '';
+      const img2 = document.createElement('img');
+      img2.className = 'frame-img';
+      img2.alt = '';
+      inner.appendChild(img1);
+      inner.appendChild(img2);
+      el.appendChild(inner);
+      return { el: el, inner: inner, img1: img1, img2: img2, current: img1, incoming: img2 };
     }
 
-    // Preload the next image soon; then run on interval.
-    preload(images[1 % images.length]);
-    setInterval(cycle, 5000);
+    function advanceFrame(frame, queue) {
+      if (!queue.length) return;
+      const next = queue.shift();
+      frame.incoming.src = next;
+      frame.incoming.onload = function () {
+        frame.incoming.classList.add('active');
+        frame.current.classList.remove('active');
+        // swap roles
+        const tmp = frame.current;
+        frame.current = frame.incoming;
+        frame.incoming = tmp;
+      };
+    }
+
+    // Split photos into 4 segments so each frame draws from a distinct pool.
+    const pool = shuffle(photos.slice());
+    const segSize = Math.ceil(pool.length / 4);
+    const seg = [
+      pool.slice(0, segSize),
+      pool.slice(segSize, segSize * 2),
+      pool.slice(segSize * 2, segSize * 3),
+      pool.slice(segSize * 3)
+    ];
+
+    const queues = seg.map(makeQueue);
+    const frames = ['frame0', 'frame1', 'frame2', 'frame3'].map(function (id, i) {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      // Pop first photo for initial display
+      const first = queues[i].shift();
+      return buildFrame(el, first);
+    }).filter(Boolean);
+
+    // Stagger the rotations so they don't all flip at once.
+    frames.forEach(function (f, i) {
+      setTimeout(function () {
+        setInterval(function () {
+          if (!queues[i].length) queues[i] = makeQueue(seg[i]);
+          advanceFrame(f, queues[i]);
+        }, 6000);
+      }, i * 1500);
+    });
   })();
   </script>
 </body>
