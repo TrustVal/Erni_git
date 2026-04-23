@@ -477,28 +477,14 @@ footer {
   gap: 8px;
 }
 
-footer img.footer-logo {
-  height: 60px;
-  width: auto;
-  margin-bottom: 4px;
-}
-
-.footer-name {
+.footer-line {
   font-family: var(--font1);
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.footer-location {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.85);
-}
-
-.footer-copy {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.75);
-  margin-top: 8px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.02em;
 }
 
 /* ============================================
@@ -820,17 +806,16 @@ footer img.footer-logo {
    FRAMES GALLERY (4 photo frames in white CTA area)
    ============================================ */
 .frames-gallery {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
   justify-content: center;
   gap: 24px;
   margin-top: 40px;
-  flex-wrap: wrap;
 }
 .photo-frame {
   position: relative;
-  width: 190px;
-  height: 230px;
-  flex-shrink: 0;
+  width: 220px;
+  height: 260px;
   padding: 8px;
   background: #fff;
   border: 1px solid rgba(0,0,0,0.12);
@@ -856,11 +841,11 @@ footer img.footer-logo {
 
 @media (max-width: 768px) {
   .frames-gallery { gap: 16px; }
-  .photo-frame { width: 140px; height: 170px; }
+  .photo-frame { width: 150px; height: 180px; }
 }
 @media (max-width: 480px) {
   .frames-gallery { gap: 12px; }
-  .photo-frame { width: 130px; height: 160px; }
+  .photo-frame { width: 135px; height: 160px; }
 }
 
 /* Conditional form field (partner name appears when checkbox ticked) */
