@@ -57,6 +57,13 @@ function doGet() {
 // ---------- Handlers ----------
 
 function handleRegister(b) {
+  // Honeypot: hidden 'website' field must be empty. Bots fill every input;
+  // humans never see this one. Return fake success so bots don't retry.
+  if (b.website && String(b.website).trim()) {
+    console.warn('Honeypot triggered — spam bot detected; submission discarded.');
+    return { ok: true, code: 'ERNI-' + Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase() };
+  }
+
   const vorname  = sanitize(b.vorname);
   const nachname = sanitize(b.nachname);
   const email    = sanitize(b.email);

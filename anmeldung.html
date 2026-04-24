@@ -45,6 +45,14 @@
 
             <form id="register-form" novalidate>
 
+              <!-- Honeypot field — hidden from humans, bots tend to fill every input.
+                   If this is non-empty when the form is submitted, the server returns a
+                   fake success and discards the submission. -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="website">Website (nicht ausfüllen)</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+              </div>
+
               <div class="form-row">
                 <div class="form-group">
                   <label for="vorname">Vorname</label>
@@ -160,7 +168,8 @@
           partnerName: form.partner.checked ? form.partnerName.value.trim() : '',
           zimmer:      false,
           bus:         form.bus.checked,
-          mitteilung:  form.mitteilung.value.trim()
+          mitteilung:  form.mitteilung.value.trim(),
+          website:     form.website ? form.website.value : ''  // honeypot
         };
 
         if (!payload.vorname || !payload.nachname || !payload.email) {

@@ -859,6 +859,18 @@ footer {
   .photo-frame { width: 135px; height: 160px; }
 }
 
+/* Honeypot — bot-visible but human-invisible. Never use display:none (some bots skip). */
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* Conditional form field (partner name appears when checkbox ticked) */
 .conditional-field {
   margin: 4px 0 10px 26px;
