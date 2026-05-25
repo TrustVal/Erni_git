@@ -289,7 +289,7 @@ function sendConfirmationEmail(r) {
   const subject = 'Bestätigung Deiner Anmeldung — ' + eventName();
   const html = buildEmailHtml({
     title: 'Danke für Deine Anmeldung!',
-    intro: 'Wir freuen uns riesig, dass Du am <b>27. Juni 2026</b> dabei bist — Day-Dance im Beach Club vom Hotel Hermitage in Luzern ab 15:00 Uhr.',
+    intro: 'Wir freuen uns riesig, dass Du am <b>27. Juni 2026</b> dabei bist — Day-Dance im Beach Club vom Hotel Hermitage in Luzern ab 14:30 Uhr.',
     record: r,
     showCode: true,
     codeNote: 'Mit diesem Code und Deinem Nachnamen kannst Du Deine Anmeldung jederzeit ansehen, ändern oder stornieren.',
